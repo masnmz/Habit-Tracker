@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct ActivityItems: Codable,Identifiable {
+struct ActivityItems: Codable,Identifiable, Hashable, Equatable{
     var id = UUID()
-    let name: String
-    let description: String
+    var name: String
+    var description: String
     var completetionCounter = 0
     
     init(name: String, description: String) {
@@ -24,11 +24,7 @@ class ActivityList {
     var activities = [ActivityItems]()
     
     init() {
-        self.activities = [
-        ActivityItems(name: "Guitar", description: "Playing Guitar"),
-        ActivityItems(name: "Walking", description: "Morning Walking Activity"),
-        ActivityItems(name: "Reading", description: "Reading Books Activity")
-        ]
+        self.activities = activities
     }
     
     func addNewActivity(name: String, description: String) {
@@ -46,7 +42,8 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
-                    ForEach(activityLists.activities) { activity in
+                ForEach(activityLists.activities, id: \.self) { activity in
+                    NavigationLink(value: activity){
                         HStack {
                             VStack {
                                 Text(activity.name)
@@ -54,7 +51,12 @@ struct ContentView: View {
                             }
                             Text(activity.description)
                                 .padding(.horizontal)
+                            Text("\(activity.completetionCounter)")
                         }
+                        .navigationDestination(for: ActivityItems.self) { activity in
+                            DetailView(activity: activity, data: activityLists)
+                        }
+                    }
                 }
             }
             .navigationTitle("Habit Tracker")
