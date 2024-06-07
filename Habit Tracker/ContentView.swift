@@ -21,7 +21,23 @@ struct ActivityItems: Codable,Identifiable, Hashable, Equatable{
 
 @Observable
 class ActivityList {
-    var activities = [ActivityItems]()
+    var activities = [ActivityItems]() {
+        didSet {
+            if let encoded = try? JSONEncoder().encode(activities) {
+                UserDefaults.standard.set(encoded, forKey: "Activities")
+            }
+        }
+    }
+    
+    init() {
+        if let savedActivities = UserDefaults.standard.data(forKey: "Activities") {
+            if let decodedActivities = try? JSONDecoder().decode([ActivityItems].self, from: savedActivities) {
+                activities = decodedActivities
+                return
+            }
+        }
+        activities = []
+    }
     
     func addNewActivity(name: String, description: String) {
         let newActivity = ActivityItems(name: name, description: description)
@@ -54,6 +70,7 @@ struct ContentView: View {
                         }
                     }
                 }
+                .onDelete(perform: removeItems)
             }
             .scrollContentBackground(.hidden)
             .background(LinearGradient(colors: [.black, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing))
@@ -63,11 +80,16 @@ struct ContentView: View {
                 Button("Add Habit", systemImage: "plus") {
                     showingAddSheet = true
                 }
+                EditButton()
             }
         }
         .sheet(isPresented: $showingAddSheet) {
             AddHabit(activities: activityLists)
         }
+    }
+    
+    func removeItems(at offsets: IndexSet) {
+        activityLists.activities.remove(atOffsets: offsets)
     }
 }
 
