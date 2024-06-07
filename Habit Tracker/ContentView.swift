@@ -23,10 +23,6 @@ struct ActivityItems: Codable,Identifiable, Hashable, Equatable{
 class ActivityList {
     var activities = [ActivityItems]()
     
-    init() {
-        self.activities = activities
-    }
-    
     func addNewActivity(name: String, description: String) {
         let newActivity = ActivityItems(name: name, description: description)
         activities.append(newActivity)
@@ -59,6 +55,9 @@ struct ContentView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(LinearGradient(colors: [.black, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing))
+            .preferredColorScheme(.dark)
             .navigationTitle("Habit Tracker")
             .toolbar {
                 Button("Add Habit", systemImage: "plus") {

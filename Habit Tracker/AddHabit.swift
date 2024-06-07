@@ -26,6 +26,7 @@ struct AddHabit: View {
                 }
             }
             .navigationTitle("Add Activity")
+            .background(LinearGradient(colors: [.black, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing))
             .toolbar {
                 Button("Save") {
                     activities.addNewActivity(name: name, description: description)
@@ -33,6 +34,8 @@ struct AddHabit: View {
                 }
             }
         }
+        .scrollContentBackground(.hidden)
+        .preferredColorScheme(.dark)
     }
 }
 

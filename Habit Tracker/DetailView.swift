@@ -13,34 +13,42 @@ struct DetailView: View {
     @State var showAlert = false
     var data: ActivityList
     var body: some View {
-        VStack {
-            Text(activity.name)
-                .font(.largeTitle)
-            Text(activity.description)
-                .font(.title)
-            Text("Completion Count: \(activity.completetionCounter)")
-                .font(.title3)
-            Button("Tap to Increase Completion Counter") {
-                var newActivity = activity
-                newActivity.completetionCounter += 1
-                
-                if let index = data.activities.firstIndex(of: activity) {
-                    data.activities[index] = newActivity
-                }
-                showAlert = true
-                dismiss()
-      
-            }
-            .padding()
-            .background(Color(red: 0, green: 0, blue: 0.5))
-            .clipShape(Capsule())
-            .alert("Counter is increased", isPresented: $showAlert) {
-                Button("OK", role: .cancel) { }
+            ZStack{
+                LinearGradient(colors: [.black, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing)
+
+                VStack {
+                    Text(activity.name)
+                        .font(.largeTitle)
+                        .foregroundStyle(.green)
+                    Text(activity.description)
+                        .font(.title)
+                        .foregroundStyle(.link)
+                    Text("Completion Count: \(activity.completetionCounter)")
+                        .font(.title3)
+                        .foregroundStyle(.orange)
+                    Button("Tap to Increase Completion Counter") {
+                        var newActivity = activity
+                        newActivity.completetionCounter += 1
+                        
+                        if let index = data.activities.firstIndex(of: activity) {
+                            data.activities[index] = newActivity
+                        }
+                        showAlert = true
+                        dismiss()
+                        
                     }
-            
-        }
+                    .padding()
+                    .foregroundColor(.black)
+                    .background(Color(red: 40, green: 20, blue: 0))
+                    .clipShape(Capsule())
+                    .alert("Counter is increased", isPresented: $showAlert) {
+                        Button("OK", role: .cancel) { }
+                    }
+                }
+            }
         .navigationTitle("Activity Details")
-        .padding()
+        .ignoresSafeArea()
+        .preferredColorScheme(.dark)
     }
 }
 
