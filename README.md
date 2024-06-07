@@ -1,4 +1,4 @@
-Habit Tracker App has been developed by myself as www.hackingwithswift.com challenge. UserDefaults, Sheet, EditButton, Codable,
+Habit Tracker App has been developed by myself as a www.hackingwithswift.com challenge. UserDefaults, Sheet, EditButton, Codable,
 Hashable, Equatable, Identifable, NavigationLink, NavigationStack, dismiss have been used in the development.
 
 Users are be able to add new activity to follow by pressing the "+" button. When the "+" button is clicked, adding new habit sheet opens and users 
